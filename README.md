@@ -88,10 +88,10 @@ python -m src.main --examples
 
 ```bash
 # Start API server (development)
-python run_api.py --host 0.0.0.0 --port 8080 --reload
+python main.py --host 0.0.0.0 --port 8080 --reload
 
 # Start API server (production)
-python run_api.py --host 0.0.0.0 --port 8080 --workers 4
+python main.py --host 0.0.0.0 --port 8080 --workers 4
 ```
 
 Then access:
@@ -281,7 +281,7 @@ validator.url_validator.trusted_domains.update(custom_domains)
 ### Smart API Integration Tests (Recommended)
 ```bash
 # Start the API server first
-python run_api.py --host 0.0.0.0 --port 8080 --reload
+python main.py --host 0.0.0.0 --port 8080 --reload
 
 # In another terminal, run comprehensive API tests
 python unit_test.py
