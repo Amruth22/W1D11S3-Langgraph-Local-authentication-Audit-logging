@@ -5,8 +5,13 @@ API server runner for the Research Assistant API.
 
 import uvicorn
 import argparse
+import os
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Add project root to path
 project_root = Path(__file__).parent
@@ -42,15 +47,15 @@ def main():
     parser.add_argument(
         "--workers",
         type=int,
-        default=1,
-        help="Number of worker processes (default: 1)"
+        default=int(os.getenv("API_WORKERS", "1")),
+        help="Number of worker processes (default from .env or 1)"
     )
     
     parser.add_argument(
         "--log-level",
-        default="info",
+        default=os.getenv("API_LOG_LEVEL", "info"),
         choices=["critical", "error", "warning", "info", "debug", "trace"],
-        help="Log level (default: info)"
+        help="Log level (default from .env or info)"
     )
     
     args = parser.parse_args()
