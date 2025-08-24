@@ -19,7 +19,19 @@ FastAPI-based REST API for the Research Assistant Agent with local authenticatio
 pip install -r requirements.txt
 ```
 
-### 2. Start the API Server
+### 2. Configure Environment Variables
+
+The API keys are already configured in the `.env` file. For production, update the JWT secret:
+
+```bash
+# For production deployment
+cp .env.example .env
+# Edit .env with your API keys and a strong JWT secret
+```
+
+**Important**: Change the `JWT_SECRET_KEY` for production use!
+
+### 3. Start the API Server
 
 ```bash
 # Development server with auto-reload
@@ -284,10 +296,26 @@ chmod +x api_examples/curl_examples.sh
 GEMINI_API_KEY=your_gemini_api_key
 TAVILY_API_KEY=your_tavily_api_key
 
-# Optional settings
-MAX_RETRIES=3
+# Authentication & Security (important for production)
+JWT_SECRET_KEY=your-super-secret-jwt-key-min-32-chars
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# API Server Configuration
+API_HOST=127.0.0.1
+API_PORT=8000
+API_WORKERS=1
+API_LOG_LEVEL=info
+
+# Storage Configuration
+USERS_FILE=data/users.json
+RESEARCH_STORAGE_DIR=data/research
+AUDIT_LOG_DIR=data/audit
+
+# LLM Configuration
 TEMPERATURE=0.1
 MAX_OUTPUT_TOKENS=1000
+MAX_RETRIES=3
 RATE_LIMIT_REQUESTS_PER_MINUTE=60
 ```
 
