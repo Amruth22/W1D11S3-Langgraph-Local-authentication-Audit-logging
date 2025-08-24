@@ -5,23 +5,30 @@ Handles research request lifecycle and storage.
 
 import asyncio
 import json
+import os
 import time
 import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional, List
 from concurrent.futures import ThreadPoolExecutor
+from dotenv import load_dotenv
 
 from .models import ResearchStatus, ResearchResponse, ResearchSummary
 from .audit import audit_logger
 from src.graph import ResearchWorkflow
 from src.state import ResearchState
 
+# Load environment variables
+load_dotenv()
+
 
 class ResearchManager:
     """Manages research requests and their lifecycle."""
     
-    def __init__(self, storage_dir: str = "data/research"):
+    def __init__(self, storage_dir: str = None):
+        # Use environment variable or default
+        storage_dir = storage_dir or os.getenv("RESEARCH_STORAGE_DIR", "data/research")
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(parents=True, exist_ok=True)
         
