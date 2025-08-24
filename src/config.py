@@ -7,16 +7,21 @@ import os
 from typing import List, Set
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load environment variables from .env file
 load_dotenv()
+
+# Validate that .env file was loaded
+if not os.getenv("GEMINI_API_KEY") and not os.getenv("TAVILY_API_KEY"):
+    print("WARNING: No API keys found in environment variables.")
+    print("Please ensure .env file exists with GEMINI_API_KEY and TAVILY_API_KEY")
 
 
 class Config:
     """Configuration class for the research agent."""
     
-    # API Keys
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY")
-    TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY")
+    # API Keys (loaded from .env file)
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY", "")
     
     # LLM Configuration
     GEMINI_MODEL: str = "gemini-2.0-flash-exp"
@@ -102,11 +107,24 @@ class Config:
     @classmethod
     def validate_config(cls) -> bool:
         """Validate that all required configuration is present."""
-        required_keys = [cls.GEMINI_API_KEY, cls.TAVILY_API_KEY]
+        # Check if API keys are present and valid
+        if not cls.GEMINI_API_KEY or cls.GEMINI_API_KEY.startswith("your_"):
+            print("ERROR: GEMINI_API_KEY not found or invalid")
+            return False
         
-        for key in required_keys:
-            if not key or key.startswith("your_") or key.startswith("AIzaSy") and len(key) < 30:
-                return False
+        if not cls.TAVILY_API_KEY or cls.TAVILY_API_KEY.startswith("your_"):
+            print("ERROR: TAVILY_API_KEY not found or invalid")
+            return False
+        
+        # Validate Gemini API key format (should start with 'AIza')
+        if not cls.GEMINI_API_KEY.startswith('AIza') or len(cls.GEMINI_API_KEY) < 30:
+            print("ERROR: GEMINI_API_KEY appears to be invalid format")
+            return False
+        
+        # Validate Tavily API key format (should start with 'tvly-')
+        if not cls.TAVILY_API_KEY.startswith('tvly-') or len(cls.TAVILY_API_KEY) < 20:
+            print("ERROR: TAVILY_API_KEY appears to be invalid format")
+            return False
         
         return True
     
