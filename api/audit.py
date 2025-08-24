@@ -9,8 +9,12 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional, Dict, Any
 from enum import Enum
+from dotenv import load_dotenv
 
 from pydantic import BaseModel
+
+# Load environment variables
+load_dotenv()
 
 
 class AuditAction(str, Enum):
@@ -56,7 +60,9 @@ class AuditEntry(BaseModel):
 class AuditLogger:
     """File-based audit logger."""
     
-    def __init__(self, log_dir: str = "data/audit"):
+    def __init__(self, log_dir: str = None):
+        # Use environment variable or default
+        log_dir = log_dir or os.getenv("AUDIT_LOG_DIR", "data/audit")
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(parents=True, exist_ok=True)
     
