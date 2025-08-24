@@ -81,11 +81,37 @@ python -m src.main --history --thread-id my_research_1
 # Show configuration
 python -m src.main --config
 
-# Save report to markdown file (auto-saves by default)
-python -m src.main "Your query" --save-report
-
 # Run examples
 python -m src.main --examples
+```
+
+### FastAPI Web Interface
+
+```bash
+# Start API server (development)
+python run_api.py --host 0.0.0.0 --port 8080 --reload
+
+# Start API server (production)
+python run_api.py --host 0.0.0.0 --port 8080 --workers 4
+```
+
+Then access:
+- **API Server**: http://0.0.0.0:8080
+- **Interactive Docs**: http://0.0.0.0:8080/docs
+- **Health Check**: http://0.0.0.0:8080/health
+
+### API Testing
+
+```bash
+# Python API client test
+python api_examples/test_api.py
+
+# Curl examples
+chmod +x api_examples/curl_examples.sh
+./api_examples/curl_examples.sh
+
+# Smart integration tests
+python unit_test.py
 ```
 
 ## Workflow Architecture
@@ -253,8 +279,26 @@ validator.url_validator.trusted_domains.update(custom_domains)
 
 ## Testing
 
+### Smart API Integration Tests (Recommended)
 ```bash
-# Run basic tests
+# Start the API server first
+python run_api.py --host 0.0.0.0 --port 8080 --reload
+
+# In another terminal, run comprehensive API tests
+python unit_test.py
+```
+
+These tests intelligently:
+- ✅ Test real API functionality on 0.0.0.0:8080
+- ✅ Validate authentication and authorization
+- ✅ Test research workflow execution
+- ✅ Check audit logging and user management
+- ✅ Handle API availability gracefully
+- ✅ Provide clear guidance for issues
+
+### Basic Component Tests
+```bash
+# Run basic component tests
 python tests/test_basic.py
 
 # Run with pytest (if installed)
