@@ -24,7 +24,7 @@ class Config:
     TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY", "")
     
     # LLM Configuration
-    GEMINI_MODEL: str = "gemini-2.0-flash-exp"
+    GEMINI_MODEL: str = "gemini-2.0-flash"
     TEMPERATURE: float = float(os.getenv("TEMPERATURE", "0.1"))
     MAX_OUTPUT_TOKENS: int = int(os.getenv("MAX_OUTPUT_TOKENS", "1000"))
     
