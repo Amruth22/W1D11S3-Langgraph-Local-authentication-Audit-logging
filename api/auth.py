@@ -14,17 +14,24 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from pydantic import BaseModel
+from dotenv import load_dotenv
 
+# Load environment variables
+load_dotenv()
 
-# Configuration
-SECRET_KEY = "research-assistant-secret-key-change-in-production"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-USERS_FILE = "data/users.json"
+# Configuration (loaded from .env file)
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "research-assistant-secret-key-change-in-production")
+ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+USERS_FILE = os.getenv("USERS_FILE", "data/users.json")
 
 # Security
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
+
+# Validate JWT secret key
+if SECRET_KEY == "research-assistant-secret-key-change-in-production":
+    print("WARNING: Using default JWT secret key. Set JWT_SECRET_KEY in .env file for production.")
 
 
 class User(BaseModel):
