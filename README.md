@@ -29,18 +29,25 @@ cd W1D11S2-Langgraph-ReAct-implementation
 # Install dependencies
 pip install -r requirements.txt
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your API keys
+# API keys are already configured in .env file
+# For your own setup: cp .env.example .env and edit with your keys
 ```
 
 ### Environment Setup
 
-Create a `.env` file with your API keys:
+The API keys are already configured in the `.env` file:
 
 ```env
-GEMINI_API_KEY=your_gemini_api_key_here
-TAVILY_API_KEY=your_tavily_api_key_here
+GEMINI_API_KEY=AIzaSyCeQeHPZYUl2iZVMfNCs1hC3FeO23pkRag
+TAVILY_API_KEY=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
+JWT_SECRET_KEY=your-super-secret-jwt-key-change-in-production-min-32-chars
+```
+
+For your own setup, copy `.env.example` to `.env` and add your API keys:
+
+```bash
+cp .env.example .env
+# Edit .env with your actual API keys and JWT secret
 ```
 
 ### Basic Usage
